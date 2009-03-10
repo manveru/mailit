@@ -310,12 +310,8 @@ BODY
         else
           '=%X' % ord
         end
-      }.join('').
-        chomp.
-        gsub(/=$/,'').
-        gsub('?', '=3F').
-        gsub('_', '=5F').
-        gsub(/ /, '_')
+      }.join('').chomp.
+        gsub(/=$/,'').gsub('?', '=3F').gsub('_', '=5F').gsub(/ /, '_')
     end
 
     def build_body_boundary(type, encoding = 'quoted-printable')
