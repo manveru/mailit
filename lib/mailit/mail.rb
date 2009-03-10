@@ -329,16 +329,7 @@ BODY
 
     # Try to get the
     def mime_type_for(filename, override = nil)
-      return override if override
-
-      if defined?(Rack::Mime)
-        Rack::Mime.mime_type(File.extname(filename))
-      elsif defined?(MIME::Types)
-        MIME::Types.type_for(filename) || 'application/octet-stream'
-      else
-        warn("Please install mime-types or rack for automatic mime-type detection")
-        'application/octet-stream'
-      end
+      override || Mime.type_for(filename)
     end
 
     ## Header shortcuts
@@ -363,15 +354,5 @@ BODY
 
       return "#{BOUNDARY_PREFIX}#{postfix}"
     end
-
-    def self.try_require(lib)
-      require lib
-      true
-    rescue LoadError
-    end
-
-    # Use either MIME::Types or Rack::Mime, no biggie if neither is there.
-    try_require('rubygems')
-    try_require('mime/types') || try_require('rack')
   end
 end
