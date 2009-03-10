@@ -340,6 +340,7 @@ BODY
       elsif defined?(MIME::Types)
         MIME::Types.type_for(filename) || 'application/octet-stream'
       else
+        warn("Please install mime-types or rack for automatic mime-type detection")
         'application/octet-stream'
       end
     end
