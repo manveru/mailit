@@ -55,3 +55,9 @@ MailFactory has a method_missing that handles getting and setting of arbitrary
 headers.
 I went for the less magical #[] and #[]= methods, maybe someone can add the
 MailFactory behaviour.
+
+## Thanks to
+
+* Michael Thompson (AKA:nylon)
+
+  Making mailer work on windows

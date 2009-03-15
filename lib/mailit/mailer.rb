@@ -27,11 +27,13 @@ module Mailit
       :server => 'smtp.localhost',
       :port => 25,
       :domain => 'localhost',
+      :username => 'foo',
       :password => 'foo',
       :engine => :erb,
       :noop => false,
       :binding => nil,
       :mailer => Net::SMTP,
+      :auth_type => :login, # :plain, :login, :cram_md5
     }
 
     attr_reader :options
@@ -78,14 +80,17 @@ module Mailit
     # @option override :port     (25)
     # @option override :domain   ('localhost')
     # @option override :password ('foo')
-    # @option override :noop     (false) won't send mail if true
+    # @option override :noop     (false) connect to server but don't send
     # @author manveru
     def send(mail, override = {})
-      server, port, domain, password, noop, mailer =
-        settings(override, :server, :port, :domain, :password, :noop, :mailer)
-      return mail if noop
+      # start options
+      server, port, domain, username, password, auth_type =
+        settings(override, :server, :port, :domain, :username, :password, :auth_type)
 
-      mailer.start(server, port, domain, mail.from, password, :cram_md5) do |smtp|
+      noop, mailer = settings(override, :noop, :mailer)
+
+      mailer.start(server, port, domain, username, password, auth_type) do |smtp|
+        return if noop
         smtp.send_message(mail.to_s, mail.from, mail.to)
       end
     end
