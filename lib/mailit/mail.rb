@@ -171,6 +171,14 @@ BODY
       self['Message-ID'] = id
     end
 
+    def send(options = {})
+      Mailer.send(self, options)
+    end
+
+    def defer_send(options = {})
+      Mailer.defer_send(self, options)
+    end
+
     ## Header handling
 
     def add_header(header, value)
