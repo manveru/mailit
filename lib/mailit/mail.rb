@@ -98,7 +98,7 @@ BODY
       @charset = 'utf-8'
       @html = @text = nil
 
-      options.each{|key, value| send("#{key}=", value) }
+      options.each{|key, value| __send__("#{key}=", value) }
     end
 
     def construct(options = {})
@@ -203,23 +203,6 @@ BODY
     end
     alias [] get_header
 
-    private
-
-    def add_attachment_common(container, file, headers)
-      container[:attachment] = file_read(file)
-      container[:headers] = headers_prepare(headers)
-      self.attachments << container
-    end
-
-    def headers_prepare(headers)
-      case headers
-      when Array
-        container[:headers] = headers
-      else
-        container[:headers] = headers.split(/\r?\n/)
-      end
-    end
-
     def header_string
       headers.join("\r\n") << "\r\n\r\n"
     end
@@ -247,6 +230,23 @@ BODY
       end
 
       body.join("\r\n\r\n")
+    end
+
+    private
+
+    def add_attachment_common(container, file, headers)
+      container[:attachment] = file_read(file)
+      container[:headers] = headers_prepare(headers)
+      self.attachments << container
+    end
+
+    def headers_prepare(headers)
+      case headers
+      when Array
+        container[:headers] = headers
+      else
+        container[:headers] = headers.split(/\r?\n/)
+      end
     end
 
     def quoted_printable_with_instruction(text)
