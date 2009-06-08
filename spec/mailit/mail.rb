@@ -1,3 +1,4 @@
+# Encoding: UTF-8
 require 'spec/helper'
 
 # The specs are translated from the Test::Unit tests of MailFactory.

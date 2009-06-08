@@ -60,11 +60,13 @@ module Mailit
       new.defer_send(mail, options)
     end
 
+    undef :send
+
     attr_reader :options
 
     def initialize(options = {})
       @options = OPTIONS.merge(options)
-      extend NetSmtpMailer unless respond_to?(:send)
+      extend NetSmtp unless respond_to?(:send)
     end
 
     private
@@ -110,7 +112,7 @@ module Mailit
         mail.construct # prepare headers and body
 
         em_options = { :port => port, :host => host, :domain => domain,
-          :from => mail.from, :to => mail.to :header => mail.header_string,
+          :from => mail.from, :to => mail.to, :header => mail.header_string,
           :body => mail.body_string }
 
         if auth_type

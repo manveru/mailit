@@ -347,6 +347,7 @@ BODY
     end
 
     def self.header_accessor(method, header)
+      public
       eval("def %s; self[%p].first; end" % [method, header.to_s])
       eval("def %s=(o); self[%p] = o; end" % [method, header.to_s])
     end
