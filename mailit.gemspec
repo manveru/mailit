@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "mailit"
-  s.version = "2009.03.10"
+  s.version = "2009.06.08"
 
   s.summary = "RFC compliant MIME email generation and SMTP mailing."
   s.description = "Simple to use class to generate RFC compliant MIME email."
