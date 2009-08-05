@@ -79,8 +79,8 @@ module Mailit
       def send(mail, override = {})
         require 'net/smtp'
 
-        server, port, domain, username, password, auth_type =
-          settings(override, :server, :port, :domain, :username, :password, :auth_type)
+        server, port, domain, username, password, auth_type, noop =
+          settings(override, :server, :port, :domain, :username, :password, :auth_type, :noop)
 
         ::Net::SMTP.start(server, port, domain, username, password, auth_type) do |smtp|
           return if noop
