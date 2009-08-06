@@ -2,7 +2,7 @@ module Mailit
   # The Mailer is an abstraction layer for different SMTP clients, it provides
   # #send and #defer_send methods
   #
-  # At the time of writing, Net::SMTP and EventMachine::SmtpClient are
+  # At the time of writing, Net::SMTP and EventMachine::Protocols::SmtpClient are
   # supported, it should be trivial to add support for any other client.
   #
   # The difference between #send and #defer_send depends on the backend, but
@@ -24,7 +24,7 @@ module Mailit
   #   # Send in background thread and continue doing other things
   #   Mailit::Mailer.defer_send(mail)
   #
-  # The default Mailer backend is Mailit::Mailer::NetSmtp, you can change the
+  # The default Mailer backend is Net::SMTP, you can change the
   # default by including another module into Mailit::mailer
   #
   # @example Using Mailt::Mailer::EventMachine by inclusion
@@ -33,13 +33,6 @@ module Mailit
   #     include Mailit::Mailer::EventMachine
   #   end
   #
-  # Another way is to extend an instance of Mailer with the backend you want to
-  # use, which will not affect other instances.
-  #
-  # @example Using Mailit::mailer::EventMachine by extension
-  #
-  #   mailer = Mailit::Mailer.new
-  #   mailer.extend(Mailit::Mailer::EventMachine)
   class Mailer
     OPTIONS = {
       :server    => 'smtp.localhost',
@@ -60,13 +53,26 @@ module Mailit
       new.defer_send(mail, options)
     end
 
-    undef :send
-
     attr_reader :options
 
     def initialize(options = {})
       @options = OPTIONS.merge(options)
-      extend NetSmtp unless respond_to?(:send)
+    end
+
+    def send(mail, override = {})
+      require 'net/smtp'
+
+      server, port, domain, username, password, auth_type, noop =
+        settings(override, :server, :port, :domain, :username, :password, :auth_type, :noop)
+
+      ::Net::SMTP.start(server, port, domain, username, password, auth_type) do |smtp|
+        return if noop
+        smtp.send_message(mail.to_s, mail.from, mail.to)
+      end
+    end
+
+    def defer_send(mail, override = {})
+      Thread.new{ send(mail, override) }
     end
 
     private
@@ -75,29 +81,9 @@ module Mailit
       options.merge(override).values_at(*keys)
     end
 
-    module NetSmtp
-      def send(mail, override = {})
-        require 'net/smtp'
-
-        server, port, domain, username, password, auth_type, noop =
-          settings(override, :server, :port, :domain, :username, :password, :auth_type, :noop)
-
-        ::Net::SMTP.start(server, port, domain, username, password, auth_type) do |smtp|
-          return if noop
-          smtp.send_message(mail.to_s, mail.from, mail.to)
-        end
-      end
-
-      def defer_send(mail, override = {})
-        Thread.new{ send(mail, override) }
-      end
-    end
-
-    # Allows you to comfortably use the EventMachine::SmtpClient.
-    # In order to use it, you have to first include this module into
-    # Mailit::Mailer or extend the Mailit::Mailer instance with it.
+    # Allows you to comfortably use the EventMachine::Protocols::SmtpClient.
+    # In order to use it, you have to first include this module into Mailit::Mailer
     module EventMachine
-
       # This assumes that EventMachine was required and we are inside the
       # EventMachine::run block.
       #
@@ -105,25 +91,41 @@ module Mailit
       # deconstruct our mail a bit.
       # On the upside, it seems like it supports STARTTLS (without certificate
       # options though)
-      def send(mail, options = {})
-        server, port, domain, username, password, auth_type =
-          settings(override, :server, :port, :domain, :username, :password, :auth_type)
+      def self.included(base)
+        require 'em/protocols/smtpclient'
+        base.module_eval do
+          def send(mail, override = {})
+            server, port, domain, username, password, auth_type =
+              settings(override, :server, :port, :domain, :username, :password, :auth_type)
 
-        mail.construct # prepare headers and body
+            mail.construct # prepare headers and body
 
-        em_options = { :port => port, :host => host, :domain => domain,
-          :from => mail.from, :to => mail.to, :header => mail.header_string,
-          :body => mail.body_string }
+            em_options = { :port => port, :host => server, :domain => domain,
+              :from => mail.from, :to => mail.to, :header => mail.header_string,
+              :body => mail.body_string }
 
-        if auth_type
-          em_options[:auth] = {
-            :type => auth_type, :username => username, :password => password }
+            if auth_type
+              em_options[:auth] = {
+                :type => auth_type, :username => username, :password => password }
+            end
+
+            email = EM::Protocols::SmtpClient.send(em_options)
+            email.callback &@callback if @callback
+            email.errback &@errback if @errback
+          end
+
+          def callback(proc=nil, &blk)
+            @callback = proc || blk
+          end
+
+          def errback(proc=nil, &blk)
+            @errback = proc || blk
+          end
+          
+          alias defer_send send
         end
-
-        ::EventMachine::SmtpClient.send(em_options)
+        
       end
-
-      alias defer_send send
-    end
-  end
-end
+    end # module EventMachine
+  end # class Mailer
+end # module Mailit
