@@ -5,13 +5,13 @@ require 'rake/clean'
 require 'rake/gempackagetask'
 require 'time'
 require 'date'
-require "lib/"
+require './lib/mailit'
 
 PROJECT_SPECS = FileList[
   'spec/*/**/*.rb'
 ]
 
-PROJECT_MODULE = ''
+PROJECT_MODULE = 'Mailit'
 PROJECT_README = 'README'
 #PROJECT_RUBYFORGE_GROUP_ID = 3034
 PROJECT_COPYRIGHT_SUMMARY = [
@@ -53,12 +53,12 @@ PROJECT_VERSION =
 PROJECT_FILES = FileList[`git ls-files`.split("\n")].exclude('.gitignore')
 
 GEMSPEC = Gem::Specification.new{|s|
-  s.name         = ""
+  s.name         = "mailit"
   s.author       = "Kevin Berry"
-  s.summary      = "The  library, by Kevin Berry"
-  s.description  = "The  library, by Kevin Berry"
+  s.summary      = "The Mailit library, by Kevin Berry"
+  s.description  = "The Mailit library, by Kevin Berry"
   s.email        = "kevinberry@nrs.us"
-  s.homepage     = ""
+  s.homepage     = "http://github.com/manveru/mailit"
   s.platform     = Gem::Platform::RUBY
   s.version      = PROJECT_VERSION
   s.files        = PROJECT_FILES
@@ -66,15 +66,6 @@ GEMSPEC = Gem::Specification.new{|s|
   s.require_path = "lib"
   s.bindir       = "bin"
   s.executables  = [""]
-  
-
-  s.post_install_message = <<MESSAGE
-============================================================
-
-Thank you for installing !
-
-============================================================
-MESSAGE
 }
 
 Dir.glob('tasks/*.rake'){|f| import(f) }
