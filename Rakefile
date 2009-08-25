@@ -64,8 +64,6 @@ GEMSPEC = Gem::Specification.new{|s|
   s.files        = PROJECT_FILES
   s.has_rdoc     = true
   s.require_path = "lib"
-  s.bindir       = "bin"
-  s.executables  = [""]
 }
 
 Dir.glob('tasks/*.rake'){|f| import(f) }
