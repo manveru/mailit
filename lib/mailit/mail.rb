@@ -139,7 +139,7 @@ BODY
         :mimetype => (mimetype || mime_type_for(filename)),
       }
 
-      add_attachment_common(container, file, headers)
+      add_attachment_common(container, filename, headers)
     end
     alias attach add_attachment
 
@@ -212,7 +212,7 @@ BODY
     alias [] get_header
 
     def header_string
-      headers.join("\r\n") << "\r\n\r\n"
+      headers.map{|key,value| "#{key}: #{value}"}.join("\r\n") << "\r\n\r\n"
     end
 
     MIME_INDICATOR = "This is a multi-part message in MIME format.\r\n\r\n--%s\r\nContent-Type: multipart/alternative; boundary=%p"
