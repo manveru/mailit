@@ -1,9 +1,13 @@
+AUTHORS
+CHANGELOG
+MANIFEST
 README.md
 Rakefile
 lib/mailit.rb
 lib/mailit/mail.rb
 lib/mailit/mailer.rb
 lib/mailit/mime.rb
+lib/mailit/version.rb
 lib/version.rb
 mailit.gemspec
 spec/helper.rb
@@ -22,4 +26,3 @@ tasks/release.rake
 tasks/reversion.rake
 tasks/setup.rake
 tasks/yard.rake
-bin/
