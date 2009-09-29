@@ -41,7 +41,7 @@ describe Mailit::Mailer do
       'example.com',
       'sender@example.com',
       'foo',
-      :cram_md5
+      :login
     ]
     mock.send_message_args.should == [mail.to_s, mail.from, mail.to]
   end

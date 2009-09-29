@@ -38,7 +38,7 @@ module Mailit
       :server    => 'smtp.localhost',
       :port      => 25,
       :domain    => 'localhost',
-      :username  => 'foo',
+      :username  => '',
       :password  => 'foo',
       :noop      => false,
       :auth_type => :login, # :plain, :login, :cram_md5
@@ -61,11 +61,13 @@ module Mailit
 
     def send(mail, override = {})
       require 'net/smtp'
+      mailer = override[:mailer] || ::Net::SMTP
 
       server, port, domain, username, password, auth_type, noop =
         settings(override, :server, :port, :domain, :username, :password, :auth_type, :noop)
+      username = mail.from.to_s if username.empty?
 
-      ::Net::SMTP.start(server, port, domain, username, password, auth_type) do |smtp|
+      mailer.start(server, port, domain, username, password, auth_type) do |smtp|
         return if noop
         smtp.send_message(mail.to_s, mail.from, mail.to)
       end
