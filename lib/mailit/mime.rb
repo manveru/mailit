@@ -2,7 +2,7 @@ module Mailit
   module Mime
     module_function
 
-    def mime_for(filename)
+    def type_for(filename)
       detect_handler unless defined?(@mime_handler)
       send(@mime_handler, filename)
     end
