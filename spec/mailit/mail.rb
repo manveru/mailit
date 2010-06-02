@@ -105,4 +105,43 @@ describe Mailit::Mail do
 
     mail.to_s.should.include('<a href=3D"http://google.com">click here</a>')
   end
+  
+  should 'make mail with a single attachment' do
+    mail = Mailit::Mail.new
+    tempfile = Tempfile.new('adw')
+    tempfile << "Some text"
+    mail.attach(tempfile.path)
+    mail.attachments.size.should == 1
+    mail.attachments.first[:attachment].should.be == tempfile.read
+    mail.attachments.first[:filename].should == Pathname.new(tempfile.path).basename
+  end
+  
+  should 'make mail with a single attachment and given filename' do
+    mail = Mailit::Mail.new
+    tempfile = Tempfile.new('adw')
+    filename = "tempfile.pdf"
+    tempfile << "Some text"
+    mail.attach_as(tempfile.path, filename)
+    mail.attachments.size.should == 1
+    mail.attachments.first[:attachment].should.be == tempfile.read
+    mail.attachments.first[:filename].should == filename
+  end
+  
+  should 'make mail with multiple attachments and given filenames' do
+    mail = Mailit::Mail.new
+    tempfile1 = Tempfile.new('adw')
+    tempfile1 << "Hello"
+    tempfile1_filename = "tempfile1.pdf"
+    tempfile2 = Tempfile.new('adw')
+    tempfile2 << "World!1"
+    tempfile2_filename = "tempfile2.pdf"
+    mail.attach_as(tempfile1.path, tempfile1_filename)
+    mail.attach_as(tempfile2.path, tempfile2_filename)
+    mail.attachments.size.should == 2
+    mail.attachments[0][:attachment].should.be == tempfile1.read
+    mail.attachments[0][:filename].should == tempfile1_filename
+    mail.attachments[1][:attachment].should.be == tempfile2.read
+    mail.attachments[1][:filename].should == tempfile2_filename
+  end
+  
 end
