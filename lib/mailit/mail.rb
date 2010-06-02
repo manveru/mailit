@@ -249,11 +249,12 @@ BODY
     end
 
     def headers_prepare(headers)
+      return if headers.nil?
       case headers
       when Array
-        container[:headers] = headers
+        headers
       else
-        container[:headers] = headers.split(/\r?\n/)
+        headers.split(/\r?\n/)
       end
     end
 
