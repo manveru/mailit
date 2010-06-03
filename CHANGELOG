@@ -1,76 +1,102 @@
-[78c844d | 2009-08-25 21:40:40 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[990f3d6 | 2010-06-03 10:55:47 UTC] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Bring the tasks up to date
+
+[071eedd | 2010-06-02 06:10:22 UTC] Tobias Matthies <tm@mit2m.de>
+
+  * Fixed headers_prepare
+
+[be7efc5 | 2010-06-02 06:09:34 UTC] Tobias Matthies <tm@mit2m.de>
+
+  * Added basic attachment tests
+
+[75b28b3 | 2010-06-01 20:40:55 UTC] Tobias Matthies <tm@mit2m.de>
+
+  * Fixed mime-type detection
+
+[84e4be5 | 2009-09-28 21:19:29 UTC] Julian Langschaedel <meta.rb@gmail.com>
+
+  * fix mailit/mailer.rb spec
+
+    did open a real connection in specs. changed to MockSMTP, instead.
+
+[b2de414 | 2009-08-26 02:02:11 UTC] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Rerelease for gemspec
+
+[78c844d | 2009-08-25 14:40:40 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Another fix
 
-[fb25c19 | 2009-08-25 21:40:01 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[fb25c19 | 2009-08-25 14:40:01 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Version 2009.08
 
-[2e6d77a | 2009-08-25 21:38:53 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[2e6d77a | 2009-08-25 14:38:53 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Fix Rakefile
 
-[585554d | 2009-08-25 05:11:42 UTC] Kevin Berry <kevin@opensourcealchemist.com>
+[585554d | 2009-08-24 22:11:42 UTC] Kevin Berry <kevin@opensourcealchemist.com>
 
   * Take in Pistos's patch, make my own patch to get running for current project, and add seedling structure.
 
-[db73002 | 2009-08-06 06:50:35 UTC] Jake Douglas <jakecdouglas@gmail.com>
+[db73002 | 2009-08-05 23:50:35 UTC] Jake Douglas <jakecdouglas@gmail.com>
 
   * NetSMTP and EventMachine version both actually send mail now. Previous configuration didn't override the #send method correctly so the EM methods weren't loaded. The EM module may only be included now, not used with extend.
 
     Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
 
-[9a36e2f | 2009-08-06 05:39:26 UTC] Jake Douglas <jakecdouglas@gmail.com>
+[9a36e2f | 2009-08-05 22:39:26 UTC] Jake Douglas <jakecdouglas@gmail.com>
 
   * get the value of :noop from the options hash in NetSmtp#send
 
     Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
 
-[c6da60b | 2009-06-08 13:52:33 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[c6da60b | 2009-06-08 06:52:33 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Release new version
 
-[185cf45 | 2009-06-08 13:51:07 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[185cf45 | 2009-06-08 06:51:07 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Fix long outstanding issues
 
-[e429f3b | 2009-04-12 13:38:16 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[e429f3b | 2009-04-12 06:38:16 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Major refactor of Mailer, add support for EventMachine::SmtpClient and remove render_send
 
-[341d76a | 2009-04-12 13:23:33 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[341d76a | 2009-04-12 06:23:33 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Make Mail#header_string and Mail#body_string public
 
-[5716124 | 2009-03-15 14:26:27 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[5716124 | 2009-03-15 06:26:27 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Add auth_type and username options for Mailer#send, should work on windows now
 
-[ff38041 | 2009-03-10 21:02:58 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[ff38041 | 2009-03-10 13:02:58 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Add gemspec
 
-[07b92d0 | 2009-03-10 20:49:36 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[07b92d0 | 2009-03-10 12:49:36 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Add Mailit::Mime - detects and uses available mime providers
 
-[584398c | 2009-03-10 20:48:49 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[584398c | 2009-03-10 12:48:49 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Little improvment to style
 
-[194c990 | 2009-03-10 20:19:08 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[194c990 | 2009-03-10 12:19:08 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Add warning if no mime-type detection is possible
 
-[184b20d | 2009-03-10 20:18:54 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[184b20d | 2009-03-10 12:18:54 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Add Version
 
-[74e9ca3 | 2009-03-10 20:18:35 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[74e9ca3 | 2009-03-10 12:18:35 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Add readme
 
-[0a4bcad | 2009-03-10 20:02:28 UTC] Michael Fellinger <m.fellinger@gmail.com>
+[0a4bcad | 2009-03-10 12:02:28 UTC] Michael Fellinger <m.fellinger@gmail.com>
 
   * Initial commit
 

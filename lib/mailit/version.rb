@@ -1,3 +1,3 @@
 module Mailit
-  VERSION = "2009.08"
+  VERSION = "2010.06"
 end
