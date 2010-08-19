@@ -1,5 +1,5 @@
 # Encoding: UTF-8
-require 'spec/helper'
+require File.join(File.dirname(__FILE__), '..', 'helper')
 
 # The specs are translated from the Test::Unit tests of MailFactory.
 #
@@ -105,7 +105,7 @@ describe Mailit::Mail do
 
     mail.to_s.should.include('<a href=3D"http://google.com">click here</a>')
   end
-  
+
   should 'make mail with a single attachment' do
     mail = Mailit::Mail.new
     tempfile = Tempfile.new('adw')
@@ -115,7 +115,7 @@ describe Mailit::Mail do
     mail.attachments.first[:attachment].should.be == tempfile.read
     mail.attachments.first[:filename].should == Pathname.new(tempfile.path).basename
   end
-  
+
   should 'make mail with a single attachment and given filename' do
     mail = Mailit::Mail.new
     tempfile = Tempfile.new('adw')
@@ -126,7 +126,7 @@ describe Mailit::Mail do
     mail.attachments.first[:attachment].should.be == tempfile.read
     mail.attachments.first[:filename].should == filename
   end
-  
+
   should 'make mail with multiple attachments and given filenames' do
     mail = Mailit::Mail.new
     tempfile1 = Tempfile.new('adw')
@@ -143,5 +143,5 @@ describe Mailit::Mail do
     mail.attachments[1][:attachment].should.be == tempfile2.read
     mail.attachments[1][:filename].should == tempfile2_filename
   end
-  
+
 end
