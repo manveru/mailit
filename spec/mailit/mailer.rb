@@ -45,4 +45,20 @@ describe Mailit::Mailer do
     ]
     mock.send_message_args.should == [mail.to_s, mail.from, mail.to]
   end
+
+  it 'sends a mail without authentication' do
+    mail = Mailit::Mail.new
+    mailer = Mailit::Mailer.new
+
+    mailer.send(mail, :server => 'smtp.example.com', :port => 25,
+                :domain => 'example.com', :username => nil, :password => nil,
+                :auth_type => nil, :mailer => MockSMTP)
+
+    mock = MockSMTP::INSTANCES.last
+    mock.start_args.should == [
+      'smtp.example.com', 25,
+      'example.com',
+      nil, nil, nil
+   ]
+  end
 end

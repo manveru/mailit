@@ -65,7 +65,7 @@ module Mailit
 
       server, port, domain, username, password, auth_type, noop =
         settings(override, :server, :port, :domain, :username, :password, :auth_type, :noop)
-      username = mail.from.to_s if username.empty?
+      username = mail.from.to_s if !username.nil? && username.empty?
 
       mailer.start(server, port, domain, username, password, auth_type) do |smtp|
         return if noop
