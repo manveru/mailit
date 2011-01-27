@@ -1,5 +1,5 @@
 # Encoding: UTF-8
-require File.join(File.dirname(__FILE__), '..', 'helper')
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'helper'))
 
 # The specs are translated from the Test::Unit tests of MailFactory.
 #
@@ -101,7 +101,7 @@ describe Mailit::Mail do
     mail.to = "test@test.com"
     mail.from = "test@othertest.com"
     mail.subject = "some html"
-    mail.html = "<a href=\"http://google.com\">click here</a>"
+    mail.html = '<a href="http://google.com">click here</a>'
 
     mail.to_s.should.include('<a href=3D"http://google.com">click here</a>')
   end
@@ -143,5 +143,4 @@ describe Mailit::Mail do
     mail.attachments[1][:attachment].should.be == tempfile2.read
     mail.attachments[1][:filename].should == tempfile2_filename
   end
-
 end
