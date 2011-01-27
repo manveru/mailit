@@ -73,7 +73,7 @@ BODY
       :date => true,
       :message_id => lambda{|mail|
         time = Time.now
-        domain = mail['from'].first.to_s.split('@').last || 'localhost'
+        domain = mail['from'].first.to_s[/@[^>]+/] || 'localhost'
         message_id = "<%f.%d.%d@%s>" % [time, $$, time.object_id, domain]
       }
     }
@@ -267,6 +267,7 @@ BODY
       return unless text
 
       if text.respond_to?(:force_encoding)
+        return text if text.ascii_only?
         text = text.dup.force_encoding(Encoding::ASCII_8BIT)
       end
 
@@ -282,8 +283,8 @@ BODY
       when Array
         address.map{|addr| quote_address_if_necessary(addr, charset) }
       when /^(\S.*)\s+(<.*>)$/
-        phrase = $1.gsub(/^['"](.*)['"]$/, '\1')
         address = $2
+        phrase = $1.gsub(/^['"](.*)['"]$/, '\1')
 
         phrase = quote_if_necessary(phrase, charset, true)
 
